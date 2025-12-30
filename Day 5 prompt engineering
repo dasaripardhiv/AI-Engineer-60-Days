@@ -1,0 +1,96 @@
+Firstly learn prompting thorugh vertex ai studio from google cloud 
+https://cloud.google.com/discover/what-is-prompt-engineering
+
+
+
+Next watch a few videos on prompt engineering 
+
+Implement a few prompts in vertex AI and chatgpt 
+
+For prompting with Chatgpt:
+It stands for:
+
+R — Role
+T — Task
+C — Context
+R — Reasoning
+O — Output Format
+S — Stopping Condition / Style / Scope
+
+It is similar to advanced prompting frameworks like CO-STAR, CRISP, and RTF but more tailored for AI problem-solving and code generation.
+
+🔍 Breakdown with Example
+1. Role
+
+Tell the AI who it should behave like.
+
+You are a senior AI engineer and Python expert.
+
+2. Task
+
+What you want the AI to do.
+
+Your task is to explain LSTM in simple terms.
+
+3. Context
+
+Give background information so the AI answers accurately.
+
+Assume the user knows basic neural networks but is new to sequential models.
+
+4. Reasoning
+
+Tell the AI to think step-by-step or logically.
+
+Explain using analogy first, then technical breakdown.
+
+5. Output
+
+Specify exact format so response becomes neat.
+
+Output must contain:
+
+short explanation
+
+real-life example
+
+simple diagram
+
+python sample code
+
+6. Stopping / Style
+
+How to end or limit the response.
+
+Keep the answer under 12 bullet points. No unnecessary jargon.
+
+🔥 Complete RTCROS Prompt Example
+R: You are a senior Deep Learning Instructor.
+T: Teach LSTM clearly to a beginner ML student.
+C: Student knows RNN basics but not gates.
+R: Explain step-by-step using analogy first.
+O: Provide:
+   1. Explanation in simple words
+   2. Real world example
+   3. A diagram-style text flow
+   4. Python code snippet for LSTM
+S: Keep answer short, crisp and under 12 bullets.
+
+
+This produces high-quality, structured answers.
+
+Where RTCROS is Useful
+Use Case	Benefit
+Learning AI concepts	Clear structured teaching responses
+Building chatbots	More controlled output behavior
+Debugging code	Step-by-step reasoning accuracy
+Summarization	Proper formatted condensed answers
+Project documentation	Organized and neat output
+Agentic system prompting	Better control + instruction clarity
+Quick RTCROS Template for Your Notes
+R - Role:
+T - Task:
+C - Context:
+R - Reasoning Approach:
+O - Output Format:
+S - Stop/Style/Scope:

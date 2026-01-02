@@ -1,0 +1,208 @@
+Study-Assistant/
+│
+├── backend/
+│   └── server.py
+│
+└── frontend/
+    ├── index.html
+    ├── style.css
+    └── script.js
+
+backend/server.py:
+___________________________________________________________________________________________________________________________________________________________________________________
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
+from openai import OpenAI
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
+client = OpenAI(api_key="YOUR_OPENAI_API_KEY")
+
+class ChatRequest(BaseModel):
+    message: str
+    mode: str
+
+def build_prompt(message, mode):
+    prompts = {
+        "teacher": f"""
+Role: You are a patient teacher.
+Task: Explain the topic clearly.
+Context: Student is learning for exams.
+Reasoning: Explain step-by-step with simple examples.
+Output: Simple explanation.
+Stop: Keep it short and clear.
+
+Topic: {message}
+""",
+        "quiz": f"""
+Role: You are an exam trainer.
+Task: Create a short quiz.
+Context: Student wants practice questions.
+Reasoning: Ask questions first, then answers.
+Output: 5 MCQs.
+Stop: No extra explanation.
+
+Topic: {message}
+""",
+        "summary": f"""
+Role: You are a note-making assistant.
+Task: Summarize the topic.
+Context: Student wants quick revision.
+Reasoning: Identify key points.
+Output: Bullet-point summary.
+Stop: Max 10 bullets.
+
+Topic: {message}
+"""
+    }
+    return prompts.get(mode, message)
+
+@app.post("/chat")
+def chat(req: ChatRequest):
+    prompt = build_prompt(req.message, req.mode)
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}]
+    )
+
+    return {"reply": response.choices[0].message.content
+__________________________________________________________________________________________________________________________________________________________________________________________
+frontend / index.html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Study Assistant</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>📘 AI Study Assistant</h2>
+
+  <select id="mode">
+    <option value="teacher">Teacher Mode</option>
+    <option value="quiz">Quiz Mode</option>
+    <option value="summary">Summary Mode</option>
+  </select>
+
+  <div id="chat"></div>
+
+  <input id="input" placeholder="Enter a topic..." />
+  <button onclick="send()">Ask</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+_____________________________________________________________________________________________________________________________________________________________________
+frontend / script.js
+let chat = document.getElementById("chat");
+
+function addMessage(text, type) {
+  let p = document.createElement("p");
+  p.className = type;
+  p.innerText = text;
+  chat.appendChild(p);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+async function send() {
+  let input = document.getElementById("input");
+  let mode = document.getElementById("mode").value;
+  let msg = input.value.trim();
+  if (!msg) return;
+
+  addMessage(msg, "user");
+  input.value = "";
+
+  let res = await fetch("http://127.0.0.1:8000/chat", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({message: msg, mode: mode})
+  });
+
+  let data = await res.json();
+  addMessage(data.reply, "bot");
+}
+________________________________________________________________________________________________________________________________________________________________________
+frontend /styles.css
+body {
+  background: #f4eadb;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  width: 420px;
+  background: #fff7ec;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+h2 {
+  text-align: center;
+  color: #5b4636;
+}
+
+select, input, button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #cbb59c;
+}
+
+button {
+  background: #b08968;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #9c6f44;
+}
+
+#chat {
+  margin-top: 15px;
+  height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  background: #fdf3e7;
+  border-radius: 8px;
+}
+
+.user {
+  text-align: right;
+  color: #3e2c1c;
+  margin-bottom: 8px;
+}
+
+.bot {
+  text-align: left;
+  color: #2f3e46;
+  margin-bottom: 8px;
+}
+________________________________________________________________________________________________________________________________________________________________________
+✅ WHAT YOU HAVE BUILT 
+
+✔ Prompt-driven AI behavior
+✔ Same chatbot → multiple personalities
+✔ RTCROS prompt engineering
+✔ Real web app
+✔ Clean UI
+✔ Interview-ready explanation

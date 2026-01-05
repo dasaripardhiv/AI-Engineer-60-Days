@@ -1,0 +1,85 @@
+Data Science Libraries
+_______________________
+1.)NumPy
+
+Description: Fundamental package for scientific computing with Python.
+Installation: pip install numpy
+__________________________
+2.)Pandas
+
+Description: Data manipulation and analysis library.
+Installation: pip install pandas
+____________________________
+3.)Matplotlib
+
+Description: Comprehensive library for creating static, animated, and interactive visualizations.
+Installation: pip install matplotlib
+____________________________
+4.)Seaborn
+
+Description: Statistical data visualization based on Matplotlib.
+Installation: pip install seaborn
+_____________________________
+5.)SciPy
+
+Description: Library for mathematics, science, and engineering.
+Installation: pip install scipy
+_______________________________________________________________________________________________________________________________
+CODE TO RUN IT 
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+
+# 1. NUMPY: Generate synthetic data
+# Creating 100 data points: Hours Studied vs. Exam Score
+np.random.seed(42)
+hours_studied = 10 * np.random.rand(100, 1)
+scores = 5 * hours_studied + np.random.randn(100, 1) * 2 + 30 
+
+# 2. PANDAS: Organize the data into a DataFrame
+df = pd.DataFrame(data=np.hstack([hours_studied, scores]), 
+                  columns=['Hours_Studied', 'Exam_Score'])
+
+print("--- First 5 Rows of Data ---")
+print(df.head())
+
+# 3. MATPLOTLIB/SEABORN: Visualize the relationship
+plt.figure(figsize=(8, 5))
+sns.scatterplot(data=df, x='Hours_Studied', y='Exam_Score')
+plt.title('Hours Studied vs. Exam Score')
+plt.grid(True)
+plt.show()
+
+# 4. SCIKIT-LEARN: Train a Model
+# Split data into Training (80%) and Testing (20%)
+X = df[['Hours_Studied']]
+y = df['Exam_Score']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initialize and Train the model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Make Predictions
+predictions = model.predict(X_test)
+
+# Evaluate the model
+mse = mean_squared_error(y_test, predictions)
+print(f"\nModel Trained. Mean Squared Error: {mse:.2f}")
+print(f"Model Equation: Score = {model.coef_[0]:.2f} * Hours + {model.intercept_:.2f}")
+________________________________________________________________________________________________________________________________
+RUN IT ON:
+1. GOOGLE COLAB
+2. VS CODE
+3. ANACONDA
+4. PYCHARM
+5. PYTHON IDE 
+_______________________________________________________________________________________________
+TOOL OF THE DAY ( DAY 07):
+AI BASED LOGO MAKER : logomaker.design
+IT USES AI TO MAKE THE LOGO DESIGN SIMPLY AND EFFICIENTLY.
+___________________________________________THE END______________________________________________
